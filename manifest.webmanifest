@@ -1,0 +1,20 @@
+{
+  "id": "./",
+  "name": "Oso Skin",
+  "short_name": "Oso Skin",
+  "description": "Tu rutina diaria para puntos negros y marcas: qué toca hoy, qué ya hiciste y cómo va tu piel.",
+  "lang": "es-MX",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F1F4F5",
+  "theme_color": "#F1F4F5",
+  "categories": ["health", "lifestyle"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

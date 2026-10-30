@@ -1,0 +1,1416 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Oso Skin</title>
+<meta name="description" content="Tu rutina diaria para puntos negros y marcas: qué toca hoy, qué ya hiciste y cómo va tu piel.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#F1F4F5" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0D1418" media="(prefers-color-scheme: dark)">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Oso Skin">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="preload" href="fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/archivo-latin-wdth-normal.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+/* Layout: una columna para cel (760px máx). Arriba el día: qué toca en la noche, checklist de mañana y noche y cómo sientes la piel. Abajo calendario, productos, reglas y ajustes con respaldo. */
+@font-face{font-family:"Archivo";font-style:normal;font-display:swap;font-weight:100 900;font-stretch:62% 125%;src:url(fonts/archivo-latin-wdth-normal.woff2) format("woff2")}
+@font-face{font-family:"IBM Plex Sans";font-style:normal;font-display:swap;font-weight:400;src:url(fonts/ibm-plex-sans-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:"IBM Plex Sans";font-style:normal;font-display:swap;font-weight:500;src:url(fonts/ibm-plex-sans-latin-500-normal.woff2) format("woff2")}
+@font-face{font-family:"IBM Plex Sans";font-style:normal;font-display:swap;font-weight:600;src:url(fonts/ibm-plex-sans-latin-600-normal.woff2) format("woff2")}
+@font-face{font-family:"IBM Plex Mono";font-style:normal;font-display:swap;font-weight:400;src:url(fonts/ibm-plex-mono-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:"IBM Plex Mono";font-style:normal;font-display:swap;font-weight:500;src:url(fonts/ibm-plex-mono-latin-500-normal.woff2) format("woff2")}
+@font-face{font-family:"IBM Plex Mono";font-style:normal;font-display:swap;font-weight:600;src:url(fonts/ibm-plex-mono-latin-600-normal.woff2) format("woff2")}
+
+:root{
+  --bg:#F1F4F5;
+  --surface:#FFFFFF;
+  --surface-2:#E7EDEF;
+  --ink:#13212A;
+  --muted:#55666E;
+  --line:#D2DCE0;
+  --accent:#2446B8;
+  --accent-ink:#FFFFFF;
+  --accent-soft:#E2E8FB;
+  --bha:#0D7A6E;
+  --bha-soft:#DCF1ED;
+  --rest-soft:#E4EAEC;
+  --pause:#8F5300;
+  --pause-soft:#FBEBD0;
+  --ok:#1C7A45;
+  --ok-soft:#DCEFE3;
+  --sk1:#9A6200;
+  --sk2:#C2410C;
+  --sk3:#B42318;
+  --warn-bg:#FFF4D9;
+  --warn-line:#EBCB82;
+  --warn-mark:#A86A00;
+  --alert-bg:#FDECEA;
+  --alert-line:#F2B8B1;
+  --f-display:"Archivo","Arial Narrow","Helvetica Neue",Arial,sans-serif;
+  --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --r:10px;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0D1418; --surface:#141E24; --surface-2:#1B272E; --ink:#E4EBEE; --muted:#93A4AC; --line:#28363D;
+    --accent:#8EA8FF; --accent-ink:#0D1418; --accent-soft:#1C2850;
+    --bha:#52CDBB; --bha-soft:#11322E; --rest-soft:#1E2A31;
+    --pause:#F0B85A; --pause-soft:#33270F;
+    --ok:#5CCB8C; --ok-soft:#13301F;
+    --sk1:#F0C46A; --sk2:#FF9A5C; --sk3:#FF7A70;
+    --warn-bg:#2A2213; --warn-line:#4F401C; --warn-mark:#F0C46A;
+    --alert-bg:#331614; --alert-line:#6B2A25;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0D1418; --surface:#141E24; --surface-2:#1B272E; --ink:#E4EBEE; --muted:#93A4AC; --line:#28363D;
+  --accent:#8EA8FF; --accent-ink:#0D1418; --accent-soft:#1C2850;
+  --bha:#52CDBB; --bha-soft:#11322E; --rest-soft:#1E2A31;
+  --pause:#F0B85A; --pause-soft:#33270F;
+  --ok:#5CCB8C; --ok-soft:#13301F;
+  --sk1:#F0C46A; --sk2:#FF9A5C; --sk3:#FF7A70;
+  --warn-bg:#2A2213; --warn-line:#4F401C; --warn-mark:#F0C46A;
+  --alert-bg:#331614; --alert-line:#6B2A25;
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15.5px;line-height:1.55}
+img{max-width:100%}
+[hidden]{display:none!important}
+button,label,a,summary,input{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.wrap{max-width:760px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 72px;display:flex;flex-direction:column;gap:44px}
+h1,h2,h3{font-family:var(--f-display);margin:0;text-wrap:balance}
+h1{font-size:clamp(2.3rem,10vw,3.4rem);font-weight:800;font-stretch:76%;line-height:.95;text-transform:uppercase}
+h2{font-size:1.6rem;font-weight:800;font-stretch:80%;line-height:1.05;text-transform:uppercase;letter-spacing:.01em}
+h3{font-size:1.15rem;font-weight:700;font-stretch:88%;line-height:1.2}
+p{margin:0}
+a{color:var(--accent)}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.hint{font-size:.86rem;color:var(--muted)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+
+/* Header */
+.top{display:flex;flex-direction:column;gap:10px}
+.top-row{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.eyebrow{font-family:var(--f-mono);font-size:.76rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.save{display:inline-flex;align-items:center;gap:6px;font-size:.78rem;color:var(--muted)}
+.save::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--ok);flex:none}
+.save[data-state="error"]::before{background:var(--sk3)}
+.jump{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.jump a{font-size:.88rem;font-weight:500;color:var(--ink);text-decoration:none;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:var(--surface)}
+.jump a:hover{border-color:var(--accent);color:var(--accent)}
+
+/* Instalar */
+.install{background:var(--accent);color:var(--accent-ink);border-radius:var(--r);padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.install b{font-family:var(--f-display);font-weight:700;font-stretch:85%;font-size:1.15rem;line-height:1.2}
+.ins-sub{font-size:.92rem}
+.btn-inv{min-height:42px;padding:0 18px;border-radius:999px;border:0;background:var(--accent-ink);color:var(--accent);font-weight:600;font-size:.95rem;cursor:pointer}
+.btn-bare{min-height:42px;padding:0 10px;border:0;background:transparent;color:inherit;font-weight:600;font-size:.92rem;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.boot-error{background:var(--alert-bg);border:1px solid var(--alert-line);border-radius:var(--r);padding:14px 16px}
+
+/* Sections */
+.sec{display:flex;flex-direction:column;gap:14px;scroll-margin-top:12px}
+.sec-head{display:flex;flex-direction:column;gap:6px}
+.sec-note{color:var(--muted);font-size:.9rem;max-width:62ch}
+
+/* Day navigator */
+.daynav{display:grid;grid-template-columns:44px minmax(0,1fr) 44px;align-items:center;gap:8px}
+.nav-btn{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;cursor:pointer;flex:none}
+.nav-btn:hover{border-color:var(--accent);color:var(--accent)}
+.dn-mid{text-align:center;min-width:0;display:flex;flex-direction:column;gap:2px}
+.dn-rel{font-family:var(--f-mono);font-size:.76rem;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);font-weight:600}
+.dn-date{font-size:1.3rem}
+.gotoday{align-self:center;font-size:.88rem;font-weight:600;color:var(--accent);background:none;border:0;padding:4px 10px;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+
+/* Tonight */
+.tonight{border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:10px;background:var(--rest-soft)}
+.tonight[data-type="bha"]{background:var(--bha-soft)}
+.tonight[data-type="ret"]{background:var(--accent-soft)}
+.tonight[data-type="pause"]{background:var(--pause-soft)}
+.tn-label{font-family:var(--f-mono);font-size:.76rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.tn-type{font-family:var(--f-display);font-weight:800;font-stretch:76%;font-size:clamp(2.4rem,11vw,3.4rem);line-height:.92;text-transform:uppercase;color:var(--muted)}
+.tonight[data-type="bha"] .tn-type{color:var(--bha)}
+.tonight[data-type="ret"] .tn-type{color:var(--accent)}
+.tonight[data-type="pause"] .tn-type{color:var(--pause)}
+.tn-meta{font-weight:500}
+.plan-wrap{display:flex;flex-direction:column;gap:4px;margin-top:2px}
+.plan,.plan-lab{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:3px}
+.plan i{height:8px;border-radius:2px;background:var(--surface)}
+.plan i[data-s="done"]{background:var(--ink);opacity:.35}
+.plan i[data-s="now"]{background:var(--ink)}
+.plan-lab span{font-family:var(--f-mono);font-size:.7rem;color:var(--muted)}
+.plan-lab span:nth-child(1){grid-column:1 / 5}
+.plan-lab span:nth-child(2){grid-column:5 / 9}
+.plan-lab span:nth-child(3){grid-column:9 / 13}
+.phase-blurb{font-size:.9rem;max-width:60ch}
+.tn-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.pause-btn{min-height:40px;padding:0 14px;border-radius:999px;border:1px solid var(--ink);background:transparent;cursor:pointer;font-weight:600;font-size:.9rem}
+.pause-btn[aria-pressed="true"]{background:var(--pause);border-color:var(--pause);color:var(--bg)}
+.pause-note{font-size:.84rem;color:var(--muted);min-width:0}
+
+/* Day blocks */
+.today-grid{display:flex;flex-direction:column;gap:12px}
+.blk{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:4px 16px 8px}
+.blk-head{display:flex;align-items:center;gap:8px;padding:12px 0 4px}
+.blk-head svg{color:var(--muted);flex:none}
+.blk-head h3{font-size:1.2rem}
+.now{font-family:var(--f-mono);font-size:.68rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:99px;background:var(--accent);color:var(--accent-ink)}
+.count{margin-left:auto;font-family:var(--f-mono);font-size:.84rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.blk[data-full="true"] .count{color:var(--ok);font-weight:600}
+.blk-note{font-size:.88rem;color:var(--muted);padding:10px 0 6px;border-top:1px dashed var(--line);display:flex;flex-direction:column;gap:2px}
+.blk-note a{font-weight:500}
+
+.steps{list-style:none;margin:0;padding:0}
+.step{display:grid;grid-template-columns:minmax(0,1fr) 44px;align-items:center;border-top:1px solid var(--line)}
+.step:first-child{border-top:0}
+.st-main{display:flex;align-items:center;gap:12px;min-height:58px;padding:8px 0;cursor:pointer;min-width:0}
+.st-main input{width:22px;height:22px;margin:0;flex:none;accent-color:var(--ok);cursor:pointer}
+.st-main input:disabled{cursor:not-allowed}
+.st-txt{display:flex;flex-direction:column;min-width:0}
+.st-name{font-weight:600;line-height:1.3}
+.st-sub{font-size:.86rem;color:var(--muted);line-height:1.35}
+.step[data-done="true"] .st-name{color:var(--muted);text-decoration:line-through;text-decoration-thickness:2px;text-decoration-color:var(--ok)}
+.st-more{width:44px;height:44px;border:0;background:none;display:grid;place-items:center;cursor:pointer;color:var(--muted);border-radius:8px}
+.st-more:hover{color:var(--accent)}
+.st-more svg{transition:transform .2s ease}
+.st-more[aria-expanded="true"] svg{transform:rotate(180deg)}
+.st-detail{grid-column:1 / -1;padding:0 4px 14px 34px;font-size:.93rem;display:flex;flex-direction:column;gap:6px;max-width:64ch}
+.st-link{font-size:.86rem;font-weight:500;align-self:flex-start}
+.step.wait{grid-template-columns:minmax(0,1fr) auto;gap:8px}
+.step.wait .st-main{cursor:default}
+.wait-ico{width:22px;flex:none;font-family:var(--f-mono);font-size:.74rem;font-weight:600;color:var(--accent);text-align:center}
+.timer{white-space:nowrap;min-height:36px;padding:0 12px;border-radius:999px;border:1px solid var(--accent);background:transparent;color:var(--accent);font-family:var(--f-mono);font-size:.82rem;font-weight:600;cursor:pointer;font-variant-numeric:tabular-nums}
+.timer[data-state="run"]{background:var(--accent);color:var(--accent-ink)}
+.timer[data-state="done"]{background:var(--ok);border-color:var(--ok);color:var(--bg)}
+
+/* Check-in */
+.checkin{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:12px}
+.ci-body{display:flex;flex-direction:column;gap:12px}
+.q{font-weight:600;font-size:.95rem}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{flex:1 1 auto;min-height:44px;padding:0 12px;border:1px solid var(--line);border-radius:999px;background:var(--bg);cursor:pointer;font-size:.9rem}
+.seg button:hover{border-color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg);font-weight:600}
+#skin button[data-v="0"][aria-pressed="true"]{background:var(--ok);border-color:var(--ok)}
+#skin button[data-v="1"][aria-pressed="true"]{background:var(--sk1);border-color:var(--sk1)}
+#skin button[data-v="2"][aria-pressed="true"]{background:var(--sk2);border-color:var(--sk2)}
+#skin button[data-v="3"][aria-pressed="true"]{background:var(--sk3);border-color:var(--sk3)}
+.note-lab{font-weight:600;font-size:.95rem}
+textarea{width:100%;font:inherit;font-size:16px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);resize:vertical;min-height:64px}
+.advice{display:flex;flex-direction:column;gap:10px}
+.adv{border-radius:8px;padding:12px 14px;background:var(--surface-2);display:flex;flex-direction:column;gap:6px}
+.adv[data-level="warn"]{background:var(--warn-bg);border:1px solid var(--warn-line)}
+.adv[data-level="alert"]{background:var(--alert-bg);border:1px solid var(--alert-line)}
+.adv b{font-family:var(--f-display);font-stretch:88%;font-size:1.02rem}
+.btn{align-self:flex-start;min-height:40px;padding:0 16px;border-radius:999px;border:0;background:var(--accent);color:var(--accent-ink);font-weight:600;font-size:.9rem;cursor:pointer}
+.btn-ghost{min-height:40px;padding:0 16px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-weight:600;font-size:.9rem;cursor:pointer}
+.link-btn{align-self:flex-start;border:0;background:none;padding:6px 0;color:var(--accent);font-weight:600;font-size:.88rem;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.future-note{font-size:.9rem;color:var(--muted)}
+
+/* Stats + calendar */
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+@media (min-width:600px){.stats{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.stat b{font-family:var(--f-mono);font-size:1.15rem;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.25}
+.stat span{font-size:.8rem;color:var(--muted)}
+.cal{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px;display:flex;flex-direction:column;gap:8px}
+.cal-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.cal-title{font-family:var(--f-display);font-weight:700;font-stretch:88%;font-size:1.1rem;text-transform:capitalize}
+.cal-dow,.cal-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.cal-dow span{font-family:var(--f-mono);font-size:.72rem;color:var(--muted);text-align:center}
+.cd{position:relative;min-height:52px;border-radius:8px;border:1px solid var(--line);background:var(--surface);display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:6px 2px 5px;color:var(--ink);cursor:pointer;min-width:0}
+.cd-empty{border:0;background:transparent;cursor:default}
+.cd-n{font-family:var(--f-mono);font-size:.85rem;font-variant-numeric:tabular-nums;line-height:1}
+.cd-t{font-family:var(--f-mono);font-size:.7rem;font-weight:600;min-width:20px;min-height:16px;line-height:16px;padding:0 5px;border-radius:99px;text-align:center}
+.cd[data-type="bha"] .cd-t{background:var(--bha-soft);color:var(--bha)}
+.cd[data-type="ret"] .cd-t{background:var(--accent-soft);color:var(--accent)}
+.cd[data-type="rest"] .cd-t{color:var(--muted)}
+.cd[data-type="pause"] .cd-t{background:var(--pause-soft);color:var(--pause)}
+.cd[data-st="full"]{background:var(--ok-soft);border-color:var(--ok)}
+.cd[data-st="part"]{border-style:dashed;border-color:var(--ok)}
+.cd[data-st="future"]{background:transparent}
+.cd[aria-current="date"] .cd-n{font-weight:700;color:var(--accent)}
+.cd.is-sel{outline:2px solid var(--accent);outline-offset:1px}
+.cd-flag{position:absolute;top:5px;right:5px;width:7px;height:7px;border-radius:50%;background:var(--sk2)}
+.cd-flag[data-sk="3"]{background:var(--sk3)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.8rem;color:var(--muted);padding-top:4px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.lg{display:inline-grid;place-items:center;min-width:20px;height:18px;padding:0 5px;border-radius:99px;font-family:var(--f-mono);font-size:.7rem;font-weight:600;font-style:normal}
+.lg-bha{background:var(--bha-soft);color:var(--bha)}
+.lg-ret{background:var(--accent-soft);color:var(--accent)}
+.lg-rest{color:var(--muted);border:1px solid var(--line)}
+.lg-pause{background:var(--pause-soft);color:var(--pause)}
+.lg-box{width:16px;height:16px;border-radius:4px;flex:none}
+.lg-full{background:var(--ok-soft);border:1px solid var(--ok)}
+.lg-part{border:1px dashed var(--ok)}
+.lg-flag{width:8px;height:8px;border-radius:50%;background:var(--sk3);flex:none}
+
+/* Products */
+.prods{display:flex;flex-direction:column;gap:10px}
+.prod{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);scroll-margin-top:12px}
+.prod summary{list-style:none;cursor:pointer;padding:14px 16px;display:grid;grid-template-columns:minmax(0,1fr) 24px;gap:2px 12px;align-items:center}
+.prod summary::-webkit-details-marker{display:none}
+.prod summary>span{grid-column:1;min-width:0}
+.prod summary svg{grid-column:2;grid-row:1 / 4;color:var(--muted);transition:transform .2s ease}
+.prod[open] summary svg{transform:rotate(180deg)}
+.p-role{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.p-name{font-family:var(--f-display);font-weight:700;font-stretch:88%;font-size:1.12rem;line-height:1.2}
+.p-when{font-size:.86rem;color:var(--muted)}
+.p-body{padding:12px 16px 16px;display:flex;flex-direction:column;gap:12px;border-top:1px dashed var(--line)}
+.p-what{max-width:62ch}
+.p-facts{margin:0;display:grid;gap:10px}
+.p-facts div{display:grid;grid-template-columns:minmax(84px,24%) minmax(0,1fr);gap:10px}
+.p-facts dt{font-weight:600;font-size:.86rem;color:var(--muted)}
+.p-facts dd{margin:0;min-width:0}
+.p-last{background:var(--surface-2);border-radius:8px;padding:10px 12px;font-size:.92rem;display:flex;flex-direction:column;gap:6px}
+.renew{display:flex;flex-direction:column;gap:8px}
+.renew:empty{display:none}
+
+/* Rules + timeline */
+.rules{background:var(--warn-bg);border:1px solid var(--warn-line);border-radius:var(--r);padding:16px}
+.rules ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px}
+.rules li{display:grid;grid-template-columns:12px 1fr;gap:10px}
+.rules li::before{content:"";width:8px;height:8px;margin-top:.58em;background:var(--warn-mark);transform:rotate(45deg)}
+.timeline{list-style:none;margin:0 0 0 6px;padding:0;border-left:2px solid var(--line)}
+.timeline li{position:relative;padding:0 0 18px 18px;display:flex;flex-direction:column;gap:2px}
+.timeline li:last-child{padding-bottom:0}
+.timeline li::before{content:"";position:absolute;left:-7px;top:.3em;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--accent)}
+.when{font-family:var(--f-mono);font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;color:var(--accent)}
+.scars{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:6px}
+
+/* Settings */
+.set{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:22px}
+.set-row{display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+.set-lab{font-weight:600}
+.set input[type="date"]{font:inherit;font-family:var(--f-mono);font-size:16px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+.chips{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.chips li{display:inline-flex;align-items:center;gap:2px;padding:2px 2px 2px 10px;border-radius:99px;background:var(--pause-soft);color:var(--pause);font-family:var(--f-mono);font-size:.82rem}
+.chips button{width:30px;height:30px;border:0;border-radius:50%;background:transparent;color:inherit;cursor:pointer;font-size:1.05rem;line-height:1}
+.confirm{display:flex;flex-direction:column;gap:10px;background:var(--warn-bg);border:1px solid var(--warn-line);border-radius:8px;padding:12px;max-width:60ch}
+.msg-err{color:var(--sk3);font-weight:500;font-size:.9rem}
+
+.toast{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);max-width:calc(100% - 32px);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:999px;font-weight:500;font-size:.92rem;box-shadow:0 6px 24px rgba(0,0,0,.22);z-index:20;text-align:center}
+
+.foot{font-size:.84rem;color:var(--muted);border-top:1px solid var(--line);padding-top:16px;max-width:65ch}
+
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  *{transition:none!important}
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+<header class="top">
+  <div class="top-row">
+    <p class="eyebrow">Kit poros y manchas</p>
+    <p class="save" id="save" data-state="ok">Se guarda en este cel</p>
+  </div>
+  <h1>Oso Skin</h1>
+  <nav class="jump" aria-label="Secciones">
+    <a href="#hoy">Hoy</a>
+    <a href="#calendario">Calendario</a>
+    <a href="#productos">Productos</a>
+    <a href="#reglas">Reglas</a>
+    <a href="#ajustes">Ajustes</a>
+  </nav>
+</header>
+
+<div class="boot-error" id="boot-error" hidden>
+  <p>No se pudo cargar la app. Ábrela otra vez con internet; después ya funciona sin conexión.</p>
+</div>
+<noscript><div class="boot-error"><p>Esta app necesita JavaScript para funcionar.</p></div></noscript>
+
+<div class="install" id="install" hidden>
+  <b id="ins-title">Instálala en tu cel</b>
+  <p class="ins-sub" id="ins-sub">Te queda como app en la pantalla de inicio y abre aunque no tengas internet.</p>
+  <div class="row">
+    <button type="button" class="btn-inv" id="ins-btn">Instalar</button>
+    <button type="button" class="btn-bare" id="ins-later">Ahora no</button>
+  </div>
+</div>
+
+<section id="hoy" class="sec" aria-labelledby="dn-date">
+  <div class="daynav">
+    <button type="button" class="nav-btn" id="prev" aria-label="Día anterior"><svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M12.5 4.5L7 10l5.5 5.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <div class="dn-mid">
+      <p class="dn-rel" id="dn-rel">Hoy</p>
+      <h2 class="dn-date" id="dn-date">Hoy</h2>
+    </div>
+    <button type="button" class="nav-btn" id="next" aria-label="Día siguiente"><svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M7.5 4.5L13 10l-5.5 5.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  </div>
+  <button type="button" class="gotoday" id="gotoday" hidden>Volver a hoy</button>
+
+  <div class="tonight" id="tonight" data-type="rest">
+    <p class="tn-label">Esta noche</p>
+    <p class="tn-type" id="tn-type">Descanso</p>
+    <p class="tn-meta" id="tn-meta"></p>
+    <div class="plan-wrap" aria-hidden="true">
+      <div class="plan" id="plan"></div>
+      <div class="plan-lab"><span>Fase 1</span><span>Fase 2</span><span>Fase 3</span></div>
+    </div>
+    <p class="phase-blurb" id="phase-blurb"></p>
+    <div class="tn-actions" id="tn-actions">
+      <button type="button" class="pause-btn" id="pause" aria-pressed="false" hidden>Pausar esta noche</button>
+      <p class="pause-note" id="pause-note"></p>
+    </div>
+  </div>
+
+  <div class="today-grid">
+    <div class="blk" id="blk-am">
+      <div class="blk-head">
+        <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><circle cx="10" cy="10" r="3.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M10 2.2v2M10 15.8v2M2.2 10h2M15.8 10h2M4.5 4.5l1.4 1.4M14.1 14.1l1.4 1.4M4.5 15.5l1.4-1.4M14.1 5.9l1.4-1.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <h3>Mañana</h3>
+        <span class="now" id="now-am" hidden>Ahora</span>
+        <span class="count" id="c-am">0/4</span>
+      </div>
+      <ul class="steps" id="am"></ul>
+      <p class="blk-note" id="am-note" hidden></p>
+    </div>
+
+    <div class="blk" id="blk-pm">
+      <div class="blk-head">
+        <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M15.6 12.6A6.6 6.6 0 0 1 7.4 4.4a6.6 6.6 0 1 0 8.2 8.2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+        <h3>Noche</h3>
+        <span class="now" id="now-pm" hidden>Ahora</span>
+        <span class="count" id="c-pm">0/2</span>
+      </div>
+      <ul class="steps" id="pm"></ul>
+      <div class="blk-note">
+        <span id="pm-note"></span>
+        <span>¿Grano con punta? Ponle parche y no lo toques. <a href="#p-patch" data-open="p-patch">Cómo usar el parche</a></span>
+      </div>
+    </div>
+
+    <div class="blk" id="blk-ex" hidden>
+      <div class="blk-head"><h3>Hoy también</h3></div>
+      <ul class="steps" id="ex"></ul>
+    </div>
+  </div>
+
+  <div class="checkin">
+    <h3>¿Cómo sientes la piel?</h3>
+    <div class="ci-body" id="ci-body">
+      <div class="seg" id="skin" role="group" aria-label="Cómo sientes la piel">
+        <button type="button" data-v="0" aria-pressed="false">Bien</button>
+        <button type="button" data-v="1" aria-pressed="false">Tirante o reseca</button>
+        <button type="button" data-v="2" aria-pressed="false">Roja o pica</button>
+        <button type="button" data-v="3" aria-pressed="false">Arde o se pela</button>
+      </div>
+      <p class="q" id="q-spots">¿Granitos nuevos?</p>
+      <div class="seg" id="spots" role="group" aria-labelledby="q-spots">
+        <button type="button" data-v="0" aria-pressed="false">Ninguno</button>
+        <button type="button" data-v="1" aria-pressed="false">Uno o dos</button>
+        <button type="button" data-v="2" aria-pressed="false">Varios</button>
+      </div>
+      <label class="note-lab" for="note">Notas del día</label>
+      <textarea id="note" rows="2" maxlength="500" placeholder="Ej.: se me reseca la barbilla"></textarea>
+      <div class="advice" id="advice" hidden></div>
+    </div>
+    <p class="future-note" id="ci-future" hidden>Cuando llegue este día, aquí apuntas cómo sientes la piel.</p>
+  </div>
+</section>
+
+<section id="calendario" class="sec" aria-labelledby="h-cal">
+  <div class="sec-head">
+    <h2 id="h-cal">Calendario</h2>
+    <p class="sec-note">Toca un día para ver qué tocaba o qué toca. Si se te olvidó palomear, lo puedes hacer después.</p>
+  </div>
+  <div class="stats">
+    <div class="stat"><b id="s-spf">0 días</b><span>Racha de bloqueador</span></div>
+    <div class="stat"><b id="s-nights">—</b><span>Noches completas</span></div>
+    <div class="stat"><b id="s-ret">0</b><span>Noches de Differin</span></div>
+    <div class="stat"><b id="s-week">—</b><span>Plan de 12 semanas</span></div>
+  </div>
+  <div class="cal">
+    <div class="cal-head">
+      <button type="button" class="nav-btn" id="cal-prev" aria-label="Mes anterior"><svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M12.5 4.5L7 10l5.5 5.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <p class="cal-title" id="cal-title" aria-live="polite"></p>
+      <button type="button" class="nav-btn" id="cal-next" aria-label="Mes siguiente"><svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M7.5 4.5L13 10l-5.5 5.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    </div>
+    <div class="cal-dow" aria-hidden="true"><span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span></div>
+    <div class="cal-grid" id="cal-grid"></div>
+    <div class="legend">
+      <span><i class="lg lg-bha">S</i>Salicílico</span>
+      <span><i class="lg lg-ret">D</i>Differin</span>
+      <span><i class="lg lg-rest">–</i>Descanso</span>
+      <span><i class="lg lg-pause">P</i>Pausa</span>
+      <span><i class="lg-box lg-full"></i>Todo hecho</span>
+      <span><i class="lg-box lg-part"></i>A medias</span>
+      <span><i class="lg-flag"></i>Piel irritada</span>
+    </div>
+  </div>
+</section>
+
+<section id="productos" class="sec" aria-labelledby="h-prod">
+  <div class="sec-head">
+    <h2 id="h-prod">Productos</h2>
+    <p class="sec-note">Todo lo que necesitas saber de cada uno. Toca para abrir.</p>
+  </div>
+  <div class="prods">
+
+    <details class="prod" id="p-ret">
+      <summary><span class="p-role">Retinoide · noches de Differin</span><span class="p-name">Differin Gel 0.1% (adapaleno)</span><span class="p-when">Tubo de 15 g</span><svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M5 7.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
+      <div class="p-body">
+        <p class="p-what">Hace que el poro se renueve más rápido para que no se tape. Con el tiempo saca los puntos negros, evita granos nuevos y mejora la textura y las marcas. Es el que más hace de todo el kit.</p>
+        <dl class="p-facts">
+          <div><dt>Cuánto</dt><dd>Un chícharo para toda la cara.</dd></div>
+          <div><dt>Cómo</dt><dd>Lava, seca y espera 10 minutos. Pon 5 puntitos (frente, cada mejilla, nariz y barbilla) y extiende en capa delgada. Lejos de los ojos, de las comisuras de la nariz y de los labios. Al final, Hydro Boost.</dd></div>
+          <div><dt>Es normal</dt><dd>Resequedad, tirantez o que se pele un poco las primeras 4 semanas. Entre la semana 2 y la 6 pueden salir granitos (purga).</dd></div>
+          <div><dt>Pausa si</dt><dd>Arde, se pela feo o salen ronchas. Pausa 2 o 3 noches. Si no mejora, ve con un dermatólogo.</dd></div>
+          <div><dt>Ojo</dt><dd>Te hace más sensible al sol. No lo pongas en piel lastimada, quemada por el sol ni justo después de rasurarte. Nunca la misma noche que el salicílico.</dd></div>
+          <div><dt>Resultados</dt><dd>Se notan entre la semana 8 y la 12. Si a los 3 meses no ves cambio, consulta a un dermatólogo.</dd></div>
+        </dl>
+        <div class="p-last"><p id="ro-ret"></p><div class="renew" id="rn-ret"></div></div>
+      </div>
+    </details>
+
+    <details class="prod" id="p-bha">
+      <summary><span class="p-role">Exfoliante BHA · noches de salicílico</span><span class="p-name">The Ordinary Salicylic Acid 2% Solution</span><span class="p-when">30 ml</span><svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M5 7.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
+      <div class="p-body">
+        <p class="p-what">Se disuelve en la grasa, entra al poro y deshace el tapón que forma el punto negro.</p>
+        <dl class="p-facts">
+          <div><dt>Cuánto</dt><dd>3–4 gotas en zona T, nariz y barbilla. En toda la cara solo si la aguantas bien.</dd></div>
+          <div><dt>Cómo</dt><dd>En la cara seca. Espera 1 o 2 minutos y pon Hydro Boost. No se enjuaga.</dd></div>
+          <div><dt>Es normal</dt><dd>Un hormigueo leve unos segundos.</dd></div>
+          <div><dt>Pausa si</dt><dd>Arde fuerte, la piel se pone muy roja o se pela.</dd></div>
+          <div><dt>Ojo</dt><dd>Nunca la misma noche que el Differin ni con otros exfoliantes. No lo uses si eres alérgico a la aspirina.</dd></div>
+        </dl>
+        <div class="p-last"><p id="ro-bha"></p><div class="renew" id="rn-bha"></div></div>
+      </div>
+    </details>
+
+    <details class="prod" id="p-nia">
+      <summary><span class="p-role">Sérum · todas las mañanas</span><span class="p-name">The Ordinary Niacinamide 10% + Zinc 1%</span><span class="p-when">30 ml</span><svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M5 7.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
+      <div class="p-body">
+        <p class="p-what">Baja la grasa, hace que los poros se vean más chicos y ayuda a aclarar las manchitas. Es de los activos más suaves.</p>
+        <dl class="p-facts">
+          <div><dt>Cuánto</dt><dd>3–4 gotas para toda la cara.</dd></div>
+          <div><dt>Cómo</dt><dd>Después de lavar, en la cara seca. Espera un minuto antes del siguiente paso.</dd></div>
+          <div><dt>Es normal</dt><dd>Si hace bolitas, estás poniendo de más o no esperas lo suficiente.</dd></div>
+          <div><dt>Pausa si</dt><dd>Te da comezón o rojez que no se quita. En ese caso úsala un día sí y uno no.</dd></div>
+          <div><dt>Ojo</dt><dd>Con el azelaico va primero la niacinamida. No la mezcles con vitamina C pura.</dd></div>
+        </dl>
+        <div class="p-last"><p id="ro-nia"></p><div class="renew" id="rn-nia"></div></div>
+      </div>
+    </details>
+
+    <details class="prod" id="p-aze">
+      <summary><span class="p-role">Antimanchas · mañanas desde la semana 5</span><span class="p-name">The Ordinary Azelaic Acid Suspension 10%</span><span class="p-when">30 ml</span><svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M5 7.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
+      <div class="p-body">
+        <p class="p-what">Aclara las manchitas que dejó el acné, baja la rojez y ayuda con los granitos.</p>
+        <dl class="p-facts">
+          <div><dt>Empiezas</dt><dd><span id="aze-start">Semana 5</span>. Entra después que lo demás para que, si algo te irrita, sepas cuál fue.</dd></div>
+          <div><dt>Cuánto</dt><dd>Un chícharo para toda la cara.</dd></div>
+          <div><dt>Cómo</dt><dd>Después de la niacinamida y antes de Hydro Boost.</dd></div>
+          <div><dt>Es normal</dt><dd>Picor o comezón leve los primeros días.</dd></div>
+          <div><dt>Pausa si</dt><dd>El ardor o la comezón no se quitan después de unos días.</dd></div>
+        </dl>
+        <div class="p-last"><p id="ro-aze"></p><div class="renew" id="rn-aze"></div></div>
+      </div>
+    </details>
+
+    <details class="prod" id="p-spf">
+      <summary><span class="p-role">Protector solar · todas las mañanas</span><span class="p-name">ISDIN Fusion Water FPS 50</span><span class="p-when">50 ml</span><svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M5 7.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
+      <div class="p-body">
+        <p class="p-what">Sin bloqueador las manchas no se aclaran, y con Differin, salicílico y azelaico tu piel se quema más fácil.</p>
+        <dl class="p-facts">
+          <div><dt>Cuánto</dt><dd>Un cuarto de cucharadita para la cara y un poco más para el cuello. Con menos no te da el FPS de la etiqueta.</dd></div>
+          <div><dt>Cómo</dt><dd>Último paso de la mañana, todos los días, aunque esté nublado.</dd></div>
+          <div><dt>Reaplica</dt><dd>Cada 2 o 3 horas si estás al sol o sudas.</dd></div>
+        </dl>
+        <div class="p-last"><p id="ro-spf"></p><div class="renew" id="rn-spf"></div></div>
+      </div>
+    </details>
+
+    <details class="prod" id="p-cerave">
+      <summary><span class="p-role">Limpiador · mañana y noche</span><span class="p-name">CeraVe en gel</span><span class="p-when">1–2 bombeadas</span><svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M5 7.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
+      <div class="p-body">
+        <p class="p-what">Quita grasa, sudor y bloqueador sin resecar. Trae ceramidas que cuidan la barrera de la piel, y eso te ayuda a aguantar mejor el Differin.</p>
+        <dl class="p-facts">
+          <div><dt>Cómo</dt><dd>Agua tibia, nunca caliente. Masajea 30 a 60 segundos, enjuaga y seca a toquecitos con una toalla limpia.</dd></div>
+          <div><dt>Ojo</dt><dd>Si el tuyo dice “SA” o “control de imperfecciones”, trae ácido salicílico. Junto con el salicílico y el Differin sería demasiado exfoliante: cámbialo por el CeraVe espumoso normal.</dd></div>
+        </dl>
+      </div>
+    </details>
+
+    <details class="prod" id="p-hb">
+      <summary><span class="p-role">Hidratante · mañana y noche</span><span class="p-name">Neutrogena Hydro Boost</span><span class="p-when">Gel</span><svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M5 7.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
+      <div class="p-body">
+        <p class="p-what">Hidrata con ácido hialurónico sin dejar grasa. Una piel hidratada se irrita menos con los activos.</p>
+        <dl class="p-facts">
+          <div><dt>Cuánto</dt><dd>Un chícharo grande para toda la cara. Un poco más si te sientes reseco.</dd></div>
+          <div><dt>Cuándo</dt><dd>En la mañana antes del bloqueador y en la noche al final.</dd></div>
+          <div><dt>Sándwich</dt><dd>En noches de Differin, si te reseca, pon una capa delgada antes del Differin y otra después.</dd></div>
+        </dl>
+      </div>
+    </details>
+
+    <details class="prod" id="p-patch">
+      <summary><span class="p-role">Si te sale un grano</span><span class="p-name">Parches hidrocoloides</span><span class="p-when">Solo granos con punta</span><svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M5 7.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
+      <div class="p-body">
+        <p class="p-what">Tapan el grano, absorben lo que sale y evitan que lo toques. En puntos negros o bolitas cerradas no hacen nada.</p>
+        <dl class="p-facts">
+          <div><dt>Cómo</dt><dd>Sobre piel limpia y seca, antes que cualquier otro producto; lo demás va alrededor. Déjalo toda la noche.</dd></div>
+          <div><dt>Cambio</dt><dd>Cuando se pone blanco y abombado ya absorbió: quítalo y pon otro.</dd></div>
+          <div><dt>Ojo</dt><dd>No pongas Differin ni salicílico debajo del parche.</dd></div>
+        </dl>
+      </div>
+    </details>
+
+  </div>
+</section>
+
+<section id="reglas" class="sec" aria-labelledby="h-reglas">
+  <div class="sec-head"><h2 id="h-reglas">Reglas</h2></div>
+  <div class="rules">
+    <ul>
+      <li>Nunca Differin y salicílico la misma noche.</li>
+      <li>Si se te olvida una noche, no la repongas. Sigue con lo que toque hoy.</li>
+      <li>Bloqueador todos los días, aunque esté nublado.</li>
+      <li>Si arde, se pela feo o salen ronchas, pausa 2 o 3 noches con el botón de Hoy.</li>
+      <li>Cero exprimir y cero extractores. Si un grano tiene punta, va parche.</li>
+      <li>Al principio nada de exfoliantes con bolitas, mascarillas fuertes ni otros ácidos.</li>
+      <li>No uses salicílico si eres alérgico a la aspirina.</li>
+    </ul>
+  </div>
+  <h3>Qué esperar</h3>
+  <ol class="timeline">
+    <li><span class="when">Semanas 1–2</span><p>Puede sentirse tirante o reseca en algunas zonas. Es normal.</p></li>
+    <li><span class="when">Semanas 2–6</span><p>Posible purga: salen granitos de poros que ya estaban tapados. No le cambies nada, se calma sola.</p></li>
+    <li><span class="when">Semanas 6–12</span><p>Menos puntos negros y poros más limpios. Si a las 12 semanas no ves cambio, ve con un dermatólogo.</p></li>
+    <li><span class="when">Meses 3–6</span><p>Las manchitas se aclaran. Van más rápido si nunca te saltas el bloqueador.</p></li>
+  </ol>
+  <div class="scars">
+    <h3>Los hoyitos</h3>
+    <p>Las cremas no rellenan las cicatrices hundidas. Para esas toca dermatólogo: microneedling, láser fraccionado o subcisión.</p>
+  </div>
+</section>
+
+<section id="ajustes" class="sec" aria-labelledby="h-aj">
+  <div class="sec-head"><h2 id="h-aj">Ajustes</h2></div>
+  <div class="set">
+    <div class="set-row">
+      <label class="set-lab" for="start">Empecé o empiezo el</label>
+      <input type="date" id="start">
+      <p class="hint">Si la cambias, todo el plan se recorre a esa fecha.</p>
+    </div>
+    <div class="set-row">
+      <p class="set-lab">Noches en pausa</p>
+      <ul class="chips" id="pauses"></ul>
+      <p class="hint" id="pauses-empty">Sin pausas.</p>
+    </div>
+    <div class="set-row">
+      <p class="set-lab">Respaldo</p>
+      <p class="hint" id="bk-where"></p>
+      <div class="row">
+        <button type="button" class="btn" id="exp-btn">Exportar respaldo</button>
+        <button type="button" class="btn-ghost" id="imp-btn">Importar respaldo</button>
+        <input type="file" id="imp-file" accept=".json,application/json,text/plain" hidden>
+      </div>
+      <p class="hint" id="bk-last"></p>
+      <p class="msg-err" id="imp-err" role="alert" hidden></p>
+      <div class="confirm" id="imp-confirm" hidden>
+        <p id="imp-summary"></p>
+        <div class="row">
+          <button type="button" class="btn" id="imp-yes">Importar</button>
+          <button type="button" class="btn-ghost" id="imp-no">Cancelar</button>
+        </div>
+      </div>
+    </div>
+    <div class="set-row" id="ins-row" hidden>
+      <p class="set-lab">App</p>
+      <p class="hint" id="ins-row-txt"></p>
+      <button type="button" class="btn-ghost" id="ins-row-btn" hidden>Instalar la app</button>
+    </div>
+    <div class="set-row">
+      <button type="button" class="btn-ghost" id="reset">Reiniciar desde hoy</button>
+      <div class="confirm" id="reset-confirm" hidden>
+        <p>Vuelves a la fase 1 empezando hoy y se quitan las pausas. Lo que ya palomeaste se queda.</p>
+        <div class="row">
+          <button type="button" class="btn" id="reset-yes">Sí, reiniciar</button>
+          <button type="button" class="btn-ghost" id="reset-no">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <p>Orientación general, no consulta médica. Si te salen ronchas, te arde mucho o algo no mejora, suspende y ve con un dermatólogo.</p>
+</footer>
+
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script src="logic.js"></script>
+<script>
+(function () {
+  "use strict";
+  var doc = document;
+  function $(id) { return doc.getElementById(id); }
+  var K = window.KPM;
+  if (!K) { $("boot-error").hidden = false; return; }
+
+  function el(tag, cls, text) { var e = doc.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+  function plural(n, one, many) { return n + " " + (n === 1 ? one : many); }
+  function pad2(n) { return (n < 10 ? "0" : "") + n; }
+  function each(sel, fn) { Array.prototype.forEach.call(doc.querySelectorAll(sel), fn); }
+  function mq(q) { try { return window.matchMedia(q).matches; } catch (e) { return false; } }
+  var reduced = mq("(prefers-reduced-motion: reduce)");
+  var coarse = mq("(pointer: coarse)");
+  var HERE = coarse ? "este cel" : "esta compu";
+
+  var SVG_DOWN = '<svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M5 7.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  var STEPS = {
+    am_clean: { name: "Lavar", sub: "CeraVe en gel", how: "Una o dos bombeadas con agua tibia, nunca caliente. Masajea 30 a 60 segundos, enjuaga y seca a toquecitos.", prod: "p-cerave" },
+    am_nia: { name: "Niacinamida", sub: "3–4 gotas en toda la cara", how: "En la cara seca, después de lavar. Espera un minuto antes del siguiente paso para que no haga bolitas.", prod: "p-nia" },
+    am_aze: { name: "Ácido azelaico", sub: "Un chícharo en toda la cara", how: "Va después de la niacinamida. Extiéndelo en capa delgada; si pones mucho hace bolitas. Los primeros días puede picar un poco.", prod: "p-aze" },
+    am_hb: { name: "Hydro Boost", sub: "Capa ligera", how: "Un chícharo grande para toda la cara. Dale un minuto para que se absorba antes del bloqueador.", prod: "p-hb" },
+    am_spf: { name: "Bloqueador", sub: "ISDIN Fusion Water · ¼ de cucharadita", how: "Un cuarto de cucharadita para la cara y un poco más para el cuello. Es el último paso de la mañana. Reaplica cada 2 o 3 horas si estás al sol o sudas.", prod: "p-spf" },
+    pm_clean: { name: "Lavar", sub: "CeraVe en gel", how: "Igual que en la mañana: quita el bloqueador y la grasa del día. Seca muy bien la cara.", prod: "p-cerave" },
+    pm_bha: { name: "Ácido salicílico", sub: "3–4 gotas en zona T, nariz y barbilla", how: "En la cara seca. Es normal un hormigueo leve unos segundos. Espera 1 o 2 minutos y sigue con Hydro Boost. No se enjuaga.", prod: "p-bha" },
+    pm_ret: { name: "Differin", sub: "Un chícharo para toda la cara", how: "Pon 5 puntitos (frente, cada mejilla, nariz y barbilla) y extiende en capa delgada. Lejos de los ojos, de las comisuras de la nariz y de los labios. Poner más no funciona mejor, solo irrita.", prod: "p-ret" },
+    pm_hb: { name: "Hydro Boost", sub: "Capa ligera", how: "Hidrata y protege la piel mientras los activos trabajan. Si te sientes reseco, ponte un poco más.", prod: "p-hb" },
+    photo0: { name: "Foto del antes", sub: "Hoy, antes de empezar", how: "Con luz de ventana y sin flash: una de frente y una de cada lado. Cada domingo repites la misma foto y cada 4 semanas comparas.", prod: null },
+    photo: { name: "Foto de progreso", sub: "Misma luz y mismo ángulo", how: "Día a día no se nota el cambio; comparando cada 4 semanas sí. Usa la misma luz y el mismo ángulo que en la foto del antes.", prod: null }
+  };
+  var TYPE_LABEL = { pre: "Sin activos", rest: "Descanso", pause: "Pausa", bha: "Salicílico", ret: "Differin" };
+  var MARK = { pre: "", rest: "–", pause: "P", bha: "S", ret: "D" };
+  var PM_NOTE = {
+    pre: "Todavía sin activos. Deja que cierren las heriditas.",
+    rest: "Noche de descanso: tu piel se recupera. Nada de activos.",
+    pause: "Noche de pausa: solo lavar e Hydro Boost.",
+    bha: "Hoy nada de Differin.",
+    ret: "Hoy nada de salicílico. Si te rasuras, que no sea justo antes del Differin."
+  };
+
+  /* ---------- guardado en el aparato ---------- */
+  var KEY = "oso-skin:v1";
+  var LATER_KEY = "oso-skin:install-later";
+  function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function lsSet(k, v) { try { localStorage.setItem(k, v); return true; } catch (e) { return false; } }
+
+  var S = { settings: K.cleanSettings(null), days: {}, meta: { lastBackup: null }, today: K.today(), sel: "", month: "", saveOk: true };
+  function load() {
+    var raw = lsGet(KEY), data = null;
+    try { data = raw ? JSON.parse(raw) : null; } catch (e) { data = null; }
+    S.settings = K.cleanSettings(data && data.settings);
+    var days = {};
+    if (data && data.days && typeof data.days === "object") {
+      Object.keys(data.days).forEach(function (k) { if (K.valid(k)) days[k] = K.cleanDay(data.days[k]); });
+    }
+    S.days = days;
+    S.meta = { lastBackup: data && data.meta && K.valid(data.meta.lastBackup) ? data.meta.lastBackup : null };
+  }
+  function compactDays() {
+    var out = {};
+    Object.keys(S.days).sort().forEach(function (k) { if (!K.isEmptyDay(S.days[k])) out[k] = S.days[k]; });
+    return out;
+  }
+  var saveTimer = null, dirty = false, askedPersist = false;
+  function save() {
+    clearTimeout(saveTimer);
+    saveTimer = null;
+    if (!dirty) return;
+    dirty = false;
+    S.saveOk = lsSet(KEY, JSON.stringify({ v: 1, settings: S.settings, days: compactDays(), meta: S.meta }));
+    renderSave();
+    if (S.saveOk && !askedPersist) { askedPersist = true; persist(); }
+  }
+  function touch(delay) { dirty = true; clearTimeout(saveTimer); saveTimer = setTimeout(save, delay == null ? 250 : delay); }
+  /* Pide al navegador que no borre los datos de la app cuando falte espacio. */
+  function persist() {
+    try {
+      if (navigator.storage && navigator.storage.persist) {
+        navigator.storage.persisted().then(function (p) { if (!p) return navigator.storage.persist(); }).catch(function () {});
+      }
+    } catch (e) {}
+  }
+  doc.addEventListener("visibilitychange", function () { if (doc.hidden) save(); });
+  window.addEventListener("pagehide", save);
+  /* Si la app está abierta en otra ventana, toma sus cambios. */
+  window.addEventListener("storage", function (e) {
+    if (e.key !== KEY || dirty) return;
+    load();
+    render();
+  });
+
+  function ensureDay(date) { if (!S.days[date]) S.days[date] = K.cleanDay(null); return S.days[date]; }
+  function shortY(date) { return K.shortDate(date) + (date.slice(0, 4) !== S.today.slice(0, 4) ? " " + date.slice(0, 4) : ""); }
+
+  /* ---------- acciones ---------- */
+  function setStep(date, part, id, val) {
+    var d = ensureDay(date);
+    if (val) d[part][id] = true; else delete d[part][id];
+    touch();
+    render();
+  }
+  function setPick(date, field, v) {
+    var d = ensureDay(date);
+    d[field] = d[field] === v ? null : v;
+    touch();
+    render();
+  }
+  function setNote(date, text) {
+    ensureDay(date).note = text.slice(0, 500);
+    touch(700);
+  }
+  function setSettings(next) {
+    S.settings = K.cleanSettings(next);
+    touch();
+    render();
+  }
+  function setPauses(list) { setSettings({ start: S.settings.start, pauses: list, opened: S.settings.opened }); }
+  function togglePause(date) {
+    var p = S.settings.pauses.slice(), i = p.indexOf(date);
+    if (i >= 0) p.splice(i, 1); else p.push(date);
+    setPauses(p);
+  }
+  function pauseN(date, n) {
+    var p = S.settings.pauses.slice();
+    for (var k = 0; k < n; k++) { var d = K.add(date, k); if (p.indexOf(d) < 0) p.push(d); }
+    setPauses(p);
+  }
+  function setStart(v) {
+    if (!K.valid(v)) { renderSettings(); return; }
+    setSettings({ start: v, pauses: S.settings.pauses, opened: S.settings.opened });
+  }
+  function setOpened(prod, date) {
+    var o = {};
+    Object.keys(S.settings.opened).forEach(function (k) { o[k] = S.settings.opened[k]; });
+    o[prod] = date;
+    setSettings({ start: S.settings.start, pauses: S.settings.pauses, opened: o });
+  }
+  function select(date, scroll) {
+    S.sel = date;
+    S.month = date.slice(0, 7);
+    render();
+    if (scroll) { var h = $("hoy"); if (h && h.scrollIntoView) h.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" }); }
+  }
+  function shiftMonth(ym, k) {
+    var y = +ym.slice(0, 4), m = +ym.slice(5, 7) - 1 + k;
+    y += Math.floor(m / 12);
+    m = ((m % 12) + 12) % 12;
+    return y + "-" + pad2(m + 1);
+  }
+
+  /* ---------- aviso corto ---------- */
+  var toastTimer = null;
+  function toast(text) {
+    var t = $("toast");
+    t.textContent = text;
+    t.hidden = false;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { t.hidden = true; }, 3200);
+  }
+
+  /* ---------- temporizador del Differin ---------- */
+  var timer = { state: "idle", end: 0, iv: null };
+  function timerText() {
+    if (timer.state === "run") {
+      var s = Math.max(0, Math.ceil((timer.end - Date.now()) / 1000));
+      return pad2(Math.floor(s / 60)) + ":" + pad2(s % 60);
+    }
+    return timer.state === "done" ? "Listo" : "Iniciar 10 min";
+  }
+  function paintTimer() {
+    var b = $("timer");
+    if (!b) return;
+    b.textContent = timerText();
+    b.setAttribute("data-state", timer.state);
+    b.setAttribute("aria-label", timer.state === "run" ? "Cancelar temporizador" : timer.state === "done" ? "Listo, ya puedes ponerte el Differin" : "Iniciar temporizador de 10 minutos");
+  }
+  function tick() {
+    if (timer.state !== "run") return;
+    if (Date.now() >= timer.end) {
+      timer.state = "done";
+      clearInterval(timer.iv);
+      timer.iv = null;
+      try { if (navigator.vibrate) navigator.vibrate([200, 100, 200]); } catch (e) {}
+    }
+    paintTimer();
+  }
+  function onTimer() {
+    if (timer.state === "run") { timer.state = "idle"; clearInterval(timer.iv); timer.iv = null; }
+    else if (timer.state === "done") timer.state = "idle";
+    else { timer.state = "run"; timer.end = Date.now() + 600000; timer.iv = setInterval(tick, 1000); }
+    paintTimer();
+  }
+
+  /* ---------- pantalla ---------- */
+  function relLabel(date) {
+    var n = K.diff(S.today, date);
+    if (n === 0) return "Hoy";
+    if (n === 1) return "Mañana";
+    if (n === -1) return "Ayer";
+    return n > 0 ? "En " + n + " días" : "Hace " + (-n) + " días";
+  }
+  function metaText(f, date) {
+    if (f.kind === "pre") return "Empiezas el " + shortY(S.settings.start) + (f.toStart === 1 && date === S.today ? ", mañana" : "");
+    if (f.kind === "pause") return "Pausa · retomas con el día " + f.day;
+    return "Día " + f.day + " · semana " + f.week + " · noche " + f.night + " de 4";
+  }
+  function stepText(id, type, opt) {
+    var d = STEPS[id], t = { name: d.name, sub: d.sub, how: d.how, prod: d.prod };
+    if (id === "pm_hb" && type === "ret") t.how += " Si el Differin te reseca, pon también una capa delgada antes del Differin (sándwich).";
+    if (opt) t.sub = "Opcional hoy si la piel está irritada";
+    return t;
+  }
+  var open = {};
+  function stepRow(part, id, day, future, date, type, opt) {
+    var t = stepText(id, type, opt);
+    var checked = !!(day && day[part][id]);
+    var li = el("li", "step");
+    li.setAttribute("data-done", checked ? "true" : "false");
+    var lab = el("label", "st-main");
+    lab.htmlFor = "st-" + id;
+    var cb = el("input");
+    cb.type = "checkbox";
+    cb.id = "st-" + id;
+    cb.checked = checked;
+    cb.disabled = future;
+    cb.addEventListener("change", function () { setStep(date, part, id, cb.checked); });
+    var tx = el("span", "st-txt");
+    tx.appendChild(el("span", "st-name", t.name));
+    tx.appendChild(el("span", "st-sub", t.sub));
+    lab.appendChild(cb);
+    lab.appendChild(tx);
+    var more = el("button", "st-more");
+    more.type = "button";
+    more.innerHTML = SVG_DOWN;
+    more.setAttribute("aria-controls", "sd-" + id);
+    more.setAttribute("aria-label", "Cómo hacerlo: " + t.name);
+    more.setAttribute("aria-expanded", open[id] ? "true" : "false");
+    var det = el("div", "st-detail");
+    det.id = "sd-" + id;
+    det.hidden = !open[id];
+    det.appendChild(el("p", null, t.how));
+    if (t.prod) {
+      var a = el("a", "st-link", "Ficha completa");
+      a.href = "#" + t.prod;
+      a.setAttribute("data-open", t.prod);
+      det.appendChild(a);
+    }
+    more.addEventListener("click", function () {
+      open[id] = !open[id];
+      det.hidden = !open[id];
+      more.setAttribute("aria-expanded", open[id] ? "true" : "false");
+    });
+    li.appendChild(lab);
+    li.appendChild(more);
+    li.appendChild(det);
+    return li;
+  }
+  function waitRow(date) {
+    var li = el("li", "step wait");
+    var m = el("div", "st-main");
+    m.appendChild(el("span", "wait-ico", "10′"));
+    var tx = el("span", "st-txt");
+    tx.appendChild(el("span", "st-name", "Espera 10 minutos"));
+    tx.appendChild(el("span", "st-sub", "Con la cara bien seca; así irrita menos"));
+    m.appendChild(tx);
+    li.appendChild(m);
+    if (date === S.today) {
+      var b = el("button", "timer");
+      b.type = "button";
+      b.id = "timer";
+      b.addEventListener("click", onTimer);
+      li.appendChild(b);
+    }
+    return li;
+  }
+  function fill(ul, part, ids, day, future, date, type, opt) {
+    ul.textContent = "";
+    var req = 0, done = 0;
+    ids.forEach(function (id) {
+      if (id === "pm_ret") ul.appendChild(waitRow(date));
+      var isOpt = !!(opt && opt[id]);
+      ul.appendChild(stepRow(part, id, day, future, date, type, isOpt));
+      if (!isOpt) { req++; if (day && day[part][id]) done++; }
+    });
+    return { req: req, done: done };
+  }
+  function renderPlan(f) {
+    var plan = $("plan");
+    plan.textContent = "";
+    var cur = f.kind === "pre" ? -1 : Math.floor(f.idx / 7);
+    for (var w = 0; w < K.PLAN_WEEKS; w++) {
+      var i = el("i");
+      i.setAttribute("data-s", w < cur ? "done" : w === cur ? "now" : "todo");
+      plan.appendChild(i);
+    }
+    var ph = f.kind === "pre" ? K.PHASES[0] : f.phase;
+    $("phase-blurb").textContent = ph.name + " · " + ph.span + ". " + ph.blurb;
+  }
+  function renderNow() {
+    var isToday = S.sel === S.today, h = new Date().getHours(), night = h < 4 || h >= 15;
+    $("now-am").hidden = !(isToday && !night);
+    $("now-pm").hidden = !(isToday && night);
+  }
+  function adviceFor(f, day) {
+    var out = [];
+    if (!day) return out;
+    if (day.skin === 1) out.push({ level: "info", title: "Tirante o reseca", text: "Es normal en las primeras semanas. Esta noche haz sándwich: una capa delgada de Hydro Boost antes del activo y otra después." });
+    if (day.skin === 2) out.push({ level: "warn", title: "Roja o pica", text: "Esta noche mejor sin activo. Si mañana sigue igual, pausa otra noche más.", act: "pause1" });
+    if (day.skin === 3) out.push({ level: "alert", title: "Arde o se pela", text: "Para los activos 2 o 3 noches. En la mañana deja solo lavar, Hydro Boost y bloqueador. Si en 3 días no mejora o te salen ronchas, ve con un dermatólogo.", act: "pause3" });
+    if (day.spots === 2) {
+      if (f.kind !== "pre" && f.idx >= 7 && f.idx <= 41) out.push({ level: "info", title: "Varios granitos nuevos", text: "Puede ser purga: salen granitos de poros que ya estaban tapados. Es normal entre la semana 2 y la 6. No cambies nada y no los toques." });
+      else if (f.kind !== "pre" && f.idx > 55) out.push({ level: "warn", title: "Varios granitos nuevos", text: "Si siguen saliendo varios pasando la semana 8, vale la pena que te vea un dermatólogo." });
+      else out.push({ level: "info", title: "Varios granitos nuevos", text: "Ponle parche al que tenga punta y no los toques. Si siguen saliendo, apúntalo en las notas." });
+    }
+    return out;
+  }
+  function renderAdvice(f, day, date) {
+    var box = $("advice");
+    box.textContent = "";
+    var items = adviceFor(f, day);
+    var canAct = date === S.today && date >= S.settings.start;
+    items.forEach(function (it) {
+      var d = el("div", "adv");
+      d.setAttribute("data-level", it.level);
+      d.appendChild(el("b", null, it.title));
+      d.appendChild(el("p", null, it.text));
+      if (canAct && it.act === "pause1") {
+        if (f.kind === "pause") d.appendChild(el("p", "hint", "Ya pausaste esta noche."));
+        else {
+          var b = el("button", "btn", "Pausar esta noche");
+          b.type = "button";
+          b.addEventListener("click", function () { togglePause(date); });
+          d.appendChild(b);
+        }
+      }
+      if (canAct && it.act === "pause3") {
+        var all = [0, 1, 2].every(function (k) { return S.settings.pauses.indexOf(K.add(date, k)) >= 0; });
+        if (all) d.appendChild(el("p", "hint", "Ya pausaste esta noche y las dos siguientes."));
+        else {
+          var b3 = el("button", "btn", "Pausar 3 noches");
+          b3.type = "button";
+          b3.addEventListener("click", function () { pauseN(date, 3); });
+          d.appendChild(b3);
+        }
+      }
+      box.appendChild(d);
+    });
+    box.hidden = items.length === 0;
+  }
+  function renderDay() {
+    var date = S.sel, st = S.settings, s = K.steps(date, st), f = s.info, day = S.days[date] || null;
+    var future = date > S.today;
+    $("dn-rel").textContent = relLabel(date);
+    $("dn-date").textContent = cap(K.longDate(date));
+    $("gotoday").hidden = date === S.today;
+
+    $("tonight").setAttribute("data-type", f.type);
+    $("tn-type").textContent = TYPE_LABEL[f.type];
+    $("tn-meta").textContent = metaText(f, date);
+    renderPlan(f);
+    var canPause = date >= st.start && date >= S.today;
+    var pb = $("pause");
+    pb.hidden = !canPause;
+    pb.textContent = f.kind === "pause" ? "Quitar pausa" : "Pausar esta noche";
+    pb.setAttribute("aria-pressed", f.kind === "pause" ? "true" : "false");
+    $("pause-note").textContent = !canPause ? "" : f.kind === "pause"
+      ? "Esta noche no hay activo. El resto del plan se recorre un día."
+      : "Úsalo si tu piel está irritada. Recorre el plan un día.";
+    $("tn-actions").hidden = !canPause;
+
+    var a = fill($("am"), "am", s.am, day, future, date, f.type, s.opt);
+    var p = fill($("pm"), "pm", s.pm, day, future, date, f.type, null);
+    $("c-am").textContent = a.done + "/" + a.req;
+    $("c-pm").textContent = p.done + "/" + p.req;
+    $("blk-am").setAttribute("data-full", a.req > 0 && a.done === a.req ? "true" : "false");
+    $("blk-pm").setAttribute("data-full", p.req > 0 && p.done === p.req ? "true" : "false");
+    $("pm-note").textContent = PM_NOTE[f.type];
+    var azeStart = f.aze ? null : K.supply(st).azeStart;
+    $("am-note").hidden = !azeStart;
+    $("am-note").textContent = azeStart ? "El ácido azelaico entra el " + K.longDate(azeStart) + " (semana 5), después de la niacinamida." : "";
+    if (s.ex.length) { fill($("ex"), "ex", s.ex, day, future, date, f.type, null); $("blk-ex").hidden = false; }
+    else { $("ex").textContent = ""; $("blk-ex").hidden = true; }
+    paintTimer();
+    renderNow();
+
+    var past = !future;
+    $("ci-body").hidden = !past;
+    $("ci-future").hidden = past;
+    each("#skin button", function (b) { b.setAttribute("aria-pressed", day && day.skin === +b.getAttribute("data-v") ? "true" : "false"); });
+    each("#spots button", function (b) { b.setAttribute("aria-pressed", day && day.spots === +b.getAttribute("data-v") ? "true" : "false"); });
+    var ta = $("note");
+    if (doc.activeElement !== ta) ta.value = day ? day.note : "";
+    renderAdvice(f, day, date);
+  }
+  function renderCal() {
+    var ym = S.month, st = S.settings;
+    $("cal-title").textContent = K.monthLabel(ym);
+    var grid = $("cal-grid");
+    grid.textContent = "";
+    var first = ym + "-01";
+    var lead = (K.dow(first) + 6) % 7;
+    for (var i = 0; i < lead; i++) grid.appendChild(el("span", "cd cd-empty"));
+    var dim = K.daysInMonth(ym);
+    for (var d = 1; d <= dim; d++) {
+      var date = ym + "-" + pad2(d);
+      var f = K.info(date, st);
+      var day = S.days[date] || null;
+      var stt = K.status(date, st, day);
+      var state = date > S.today ? "future" : stt.full ? "full" : stt.any ? "part" : "none";
+      var b = el("button", "cd");
+      b.type = "button";
+      b.setAttribute("data-date", date);
+      b.setAttribute("data-type", f.type);
+      b.setAttribute("data-st", state);
+      if (date === S.today) b.setAttribute("aria-current", "date");
+      if (date === S.sel) b.classList.add("is-sel");
+      b.appendChild(el("span", "cd-n", String(d)));
+      b.appendChild(el("span", "cd-t", MARK[f.type]));
+      if (day && day.skin !== null && day.skin >= 2) {
+        var fl = el("span", "cd-flag");
+        fl.setAttribute("data-sk", String(day.skin));
+        b.appendChild(fl);
+      }
+      b.setAttribute("aria-label", cap(K.longDate(date)) + ": " + TYPE_LABEL[f.type] + (state === "full" ? ", todo hecho" : state === "part" ? ", a medias" : ""));
+      grid.appendChild(b);
+    }
+  }
+  function retCount(from) {
+    var r = 0;
+    Object.keys(S.days).forEach(function (k) { if ((!from || k >= from) && S.days[k].pm.pm_ret) r++; });
+    return r;
+  }
+  function renderStats() {
+    var t = S.today, st = S.settings;
+    $("s-spf").textContent = plural(K.spfStreak(t, S.days), "día", "días");
+    $("s-ret").textContent = String(retCount(null));
+    if (t < st.start) {
+      $("s-nights").textContent = "—";
+      $("s-week").textContent = "Empiezas " + shortY(st.start);
+      return;
+    }
+    var done = 0, total = 0, guard = 0;
+    for (var d = st.start; d <= t && guard < 3660; d = K.add(d, 1), guard++) {
+      var ok = K.status(d, st, S.days[d] || null).pm;
+      if (d < t) { total++; if (ok) done++; }
+      else if (ok) { total++; done++; }
+    }
+    $("s-nights").textContent = total ? done + " de " + total : "—";
+    var f = K.info(t, st);
+    $("s-week").textContent = f.week <= K.PLAN_WEEKS ? "Semana " + f.week + " de " + K.PLAN_WEEKS : "Semana " + f.week;
+  }
+
+  /* Hasta cuándo alcanza cada envase, y el botón para volver a contar. */
+  var renewAsk = null;
+  function supplyText(from, until, unit, tail) {
+    var base = "Contando desde el " + shortY(from) + ", ";
+    if (!until) return base + "te alcanza para mucho.";
+    if (until < S.today) return base + "ya se debió acabar (aprox. el " + shortY(until) + "). Cuando abras uno nuevo, toca «Abrí uno nuevo» para que vuelva a contar.";
+    return base + "te alcanza aprox. hasta el " + shortY(until) + " (" + unit + ")." + (tail ? " " + tail : "");
+  }
+  function renewBox(prod, show) {
+    var box = $("rn-" + prod);
+    box.textContent = "";
+    if (!show) return;
+    if (renewAsk === prod) {
+      box.appendChild(el("p", null, "¿Abriste un envase nuevo hoy? Vuelvo a contar desde hoy cuánto te dura."));
+      var row = el("div", "row");
+      var yes = el("button", "btn", "Sí, hoy");
+      yes.type = "button";
+      yes.addEventListener("click", function () { renewAsk = null; setOpened(prod, S.today); toast("Listo, cuento desde hoy"); });
+      var no = el("button", "btn-ghost", "Cancelar");
+      no.type = "button";
+      no.addEventListener("click", function () { renewAsk = null; renderProducts(); });
+      row.appendChild(yes);
+      row.appendChild(no);
+      box.appendChild(row);
+    } else {
+      var b = el("button", "link-btn", "Abrí uno nuevo");
+      b.type = "button";
+      b.addEventListener("click", function () {
+        renewAsk = prod;
+        renderProducts();
+        var y = box.querySelector(".btn");
+        if (y) y.focus();
+      });
+      box.appendChild(b);
+    }
+  }
+  function renderProducts() {
+    var st = S.settings, s = K.supply(st), t = S.today;
+    var used = retCount(s.ret.from);
+    $("ro-ret").textContent = supplyText(s.ret.from, s.ret.until, "unas 30 noches de Differin", "Compra otro una o dos semanas antes.") +
+      (used ? " Llevas " + plural(used, "noche", "noches") + " con este tubo." : "");
+    renewBox("ret", true);
+    $("ro-nia").textContent = supplyText(s.nia.from, s.nia.until, "unas 150 mañanas");
+    renewBox("nia", true);
+    var yearOut = K.add(s.bha.from, 365);
+    $("ro-bha").textContent = !s.bha.until || s.bha.until > yearOut
+      ? "Te dura más de un año, así que se caduca antes de acabarse. Revisa en la caja el dibujo del frasquito abierto (por ejemplo, 12M): son los meses que dura después de abrirlo."
+      : supplyText(s.bha.from, s.bha.until, "unas 150 noches");
+    renewBox("bha", true);
+    $("aze-start").textContent = s.azeStart ? cap(K.longDate(s.azeStart)) + (s.azeStart.slice(0, 4) !== t.slice(0, 4) ? " de " + s.azeStart.slice(0, 4) : "") : "Semana 5";
+    var azeOn = s.aze && t >= s.azeStart;
+    $("ro-aze").textContent = !s.aze ? "" : azeOn ? supplyText(s.aze.from, s.aze.until, "unas 100 mañanas") : "Todavía no lo usas. Empiezas el " + shortY(s.azeStart) + ".";
+    renewBox("aze", !!azeOn);
+    $("ro-spf").textContent = supplyText(s.spf.from, s.spf.until, "unos 40 días", "Si te dura mucho más, te estás poniendo poco.");
+    renewBox("spf", true);
+  }
+  function renderSettings() {
+    var si = $("start");
+    if (doc.activeElement !== si) si.value = S.settings.start;
+    var ul = $("pauses");
+    ul.textContent = "";
+    S.settings.pauses.forEach(function (p) {
+      var li = el("li");
+      li.appendChild(el("span", null, shortY(p)));
+      var b = el("button", null, "×");
+      b.type = "button";
+      b.setAttribute("aria-label", "Quitar la pausa del " + K.longDate(p));
+      b.addEventListener("click", function () { togglePause(p); });
+      li.appendChild(b);
+      ul.appendChild(li);
+    });
+    $("pauses-empty").hidden = S.settings.pauses.length > 0;
+    renderBackup();
+  }
+  function renderBackup() {
+    $("bk-where").textContent = "Tu avance vive en " + HERE + ", no en internet. Para pasarlo a otro aparato, o para no perderlo si cambias de cel o borras los datos del navegador, saca un respaldo.";
+    var lb = S.meta.lastBackup;
+    $("bk-last").textContent = lb ? "Último respaldo: " + shortY(lb) + "." + (K.diff(lb, S.today) > 30 ? " Ya toca sacar otro." : "") : "Todavía no has sacado ningún respaldo.";
+  }
+  function renderSave() {
+    var s = $("save");
+    s.setAttribute("data-state", S.saveOk ? "ok" : "error");
+    s.textContent = S.saveOk ? "Se guarda en " + HERE : "No se pudo guardar";
+  }
+  function render() {
+    var a = doc.activeElement, aid = a && a.id;
+    renderDay();
+    renderCal();
+    renderStats();
+    renderProducts();
+    renderSettings();
+    renderSave();
+    renderInstall();
+    if (aid) {
+      var n = $(aid);
+      if (n && n !== doc.activeElement && typeof n.focus === "function") {
+        try { n.focus({ preventScroll: true }); } catch (e) { n.focus(); }
+      }
+    }
+  }
+
+  /* ---------- respaldo: exportar e importar ---------- */
+  function markBackup() {
+    S.meta.lastBackup = S.today;
+    touch(0);
+    renderBackup();
+  }
+  function download(blob, name) {
+    var url = URL.createObjectURL(blob);
+    var a = el("a");
+    a.href = url;
+    a.download = name;
+    doc.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+    markBackup();
+    toast("Respaldo descargado");
+  }
+  function doExport() {
+    save();
+    var name = "oso-skin-respaldo-" + S.today + ".json";
+    var text = JSON.stringify({ app: "oso-skin", v: 1, exportedAt: new Date().toISOString(), settings: S.settings, days: compactDays() }, null, 2);
+    var blob = new Blob([text], { type: "application/json" });
+    var file = null;
+    try { file = new File([text], name, { type: "application/json" }); } catch (e) {}
+    if (coarse && file && navigator.canShare && navigator.share) {
+      var ok = false;
+      try { ok = navigator.canShare({ files: [file] }); } catch (e) { ok = false; }
+      if (ok) {
+        navigator.share({ files: [file], title: "Respaldo de Oso Skin" }).then(function () {
+          markBackup();
+          toast("Respaldo listo");
+        }, function (err) {
+          if (!err || err.name !== "AbortError") download(blob, name);
+        });
+        return;
+      }
+    }
+    download(blob, name);
+  }
+  var pendingImport = null;
+  function showImpError(text) {
+    pendingImport = null;
+    $("imp-confirm").hidden = true;
+    $("imp-err").textContent = text;
+    $("imp-err").hidden = false;
+  }
+  function readText(f) {
+    if (f.text) return f.text();
+    return new Promise(function (res, rej) {
+      var r = new FileReader();
+      r.onload = function () { res(String(r.result)); };
+      r.onerror = rej;
+      r.readAsText(f);
+    });
+  }
+  function onImportFile(e) {
+    var f = e.target.files && e.target.files[0];
+    $("imp-err").hidden = true;
+    if (!f) return;
+    if (f.size > 2000000) { showImpError("Ese archivo es demasiado grande para ser un respaldo de Oso Skin."); return; }
+    readText(f).then(function (text) {
+      var obj = null;
+      try { obj = JSON.parse(text); } catch (err) { obj = null; }
+      var imp = K.parseBackup(obj);
+      if (!imp) { showImpError("Ese archivo no es un respaldo de Oso Skin."); return; }
+      pendingImport = imp;
+      var sum = imp.count
+        ? "El archivo trae " + plural(imp.count, "día", "días") + " registrados, del " + shortY(imp.first) + " al " + shortY(imp.last) + ". Se juntan con lo que ya tienes aquí; no se borra nada de lo que ya palomeaste."
+        : "El archivo no trae días registrados.";
+      if (imp.settings) sum += " La fecha de inicio, las pausas y los envases abiertos se toman del archivo.";
+      $("imp-summary").textContent = sum;
+      $("imp-confirm").hidden = false;
+      $("imp-yes").focus();
+    }, function () { showImpError("No se pudo leer el archivo."); });
+  }
+  function applyImport() {
+    var imp = pendingImport;
+    pendingImport = null;
+    $("imp-confirm").hidden = true;
+    if (!imp) return;
+    Object.keys(imp.days).forEach(function (d) {
+      S.days[d] = S.days[d] ? K.mergeDay(S.days[d], imp.days[d]) : imp.days[d];
+    });
+    if (imp.settings) S.settings = imp.settings;
+    touch(0);
+    render();
+    toast(imp.count ? "Listo, se importaron " + plural(imp.count, "día", "días") : "Listo, se importaron tus ajustes");
+  }
+
+  /* ---------- instalar la app ---------- */
+  var deferredPrompt = null, installed = false;
+  var standalone = mq("(display-mode: standalone)") || navigator.standalone === true;
+  var ios = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  function renderInstall() {
+    var isApp = standalone || installed;
+    var later = lsGet(LATER_KEY);
+    var snoozed = later && K.valid(later) && K.diff(later, S.today) < 7;
+    var canPrompt = !!deferredPrompt;
+    var where = coarse ? "tu cel" : "tu compu";
+    $("install").hidden = isApp || snoozed || !(canPrompt || ios);
+    $("ins-title").textContent = "Instálala en " + where;
+    $("ins-btn").hidden = !canPrompt;
+    $("ins-sub").textContent = canPrompt
+      ? "Te queda como app en " + (coarse ? "la pantalla de inicio" : "tu compu") + " y abre aunque no tengas internet."
+      : "En Safari toca el botón Compartir (el cuadrito con la flecha) y luego «Agregar a inicio». Así abre como app, aunque no tengas internet.";
+    $("ins-row").hidden = false;
+    $("ins-row-btn").hidden = isApp || !canPrompt;
+    $("ins-row-txt").textContent = isApp ? "Ya la tienes instalada."
+      : canPrompt ? "Instálala para abrirla como app, aunque no tengas internet."
+      : ios ? "Para instalarla: en Safari toca Compartir y luego «Agregar a inicio»."
+      : "Para instalarla, abre esta página en Chrome o Edge y usa la opción Instalar del menú.";
+  }
+  function promptInstall() {
+    if (!deferredPrompt) return;
+    var ev = deferredPrompt;
+    deferredPrompt = null;
+    ev.prompt();
+    var done = function () { renderInstall(); };
+    if (ev.userChoice && ev.userChoice.then) ev.userChoice.then(done, done); else done();
+  }
+  window.addEventListener("beforeinstallprompt", function (e) {
+    e.preventDefault();
+    deferredPrompt = e;
+    renderInstall();
+  });
+  window.addEventListener("appinstalled", function () {
+    deferredPrompt = null;
+    installed = true;
+    renderInstall();
+    toast("Listo, ya está instalada");
+  });
+
+  /* ---------- eventos ---------- */
+  $("prev").addEventListener("click", function () { select(K.add(S.sel, -1)); });
+  $("next").addEventListener("click", function () { select(K.add(S.sel, 1)); });
+  $("gotoday").addEventListener("click", function () { select(S.today); });
+  $("pause").addEventListener("click", function () { togglePause(S.sel); });
+  each("#skin button", function (b) { b.addEventListener("click", function () { setPick(S.sel, "skin", +b.getAttribute("data-v")); }); });
+  each("#spots button", function (b) { b.addEventListener("click", function () { setPick(S.sel, "spots", +b.getAttribute("data-v")); }); });
+  $("note").addEventListener("input", function (e) { setNote(S.sel, e.target.value); });
+  $("cal-prev").addEventListener("click", function () { S.month = shiftMonth(S.month, -1); renderCal(); });
+  $("cal-next").addEventListener("click", function () { S.month = shiftMonth(S.month, 1); renderCal(); });
+  $("cal-grid").addEventListener("click", function (e) {
+    var b = e.target.closest ? e.target.closest("button.cd") : null;
+    if (b) select(b.getAttribute("data-date"), true);
+  });
+  $("start").addEventListener("change", function (e) { setStart(e.target.value); });
+  $("reset").addEventListener("click", function () { $("reset-confirm").hidden = false; $("reset").hidden = true; $("reset-yes").focus(); });
+  $("reset-no").addEventListener("click", function () { $("reset-confirm").hidden = true; $("reset").hidden = false; $("reset").focus(); });
+  $("reset-yes").addEventListener("click", function () {
+    $("reset-confirm").hidden = true;
+    $("reset").hidden = false;
+    S.settings = K.cleanSettings({ start: S.today, pauses: [], opened: S.settings.opened });
+    touch();
+    select(S.today, true);
+  });
+  $("exp-btn").addEventListener("click", doExport);
+  $("imp-btn").addEventListener("click", function () { var f = $("imp-file"); f.value = ""; f.click(); });
+  $("imp-file").addEventListener("change", onImportFile);
+  $("imp-yes").addEventListener("click", applyImport);
+  $("imp-no").addEventListener("click", function () { pendingImport = null; $("imp-confirm").hidden = true; $("imp-btn").focus(); });
+  $("ins-btn").addEventListener("click", promptInstall);
+  $("ins-row-btn").addEventListener("click", promptInstall);
+  $("ins-later").addEventListener("click", function () { lsSet(LATER_KEY, S.today); renderInstall(); });
+  doc.addEventListener("click", function (e) {
+    var a = e.target.closest ? e.target.closest("[data-open]") : null;
+    if (!a) return;
+    var d = $(a.getAttribute("data-open"));
+    if (d) d.open = true;
+  });
+  function checkToday() {
+    var t = K.today();
+    if (t !== S.today) {
+      var follow = S.sel === S.today;
+      S.today = t;
+      if (follow) { S.sel = t; S.month = t.slice(0, 7); }
+      render();
+    } else renderNow();
+  }
+  setInterval(checkToday, 60000);
+  doc.addEventListener("visibilitychange", function () { if (!doc.hidden) checkToday(); });
+
+  load();
+  S.sel = S.today;
+  S.month = S.sel.slice(0, 7);
+  render();
+
+  /* ---------- funcionar sin internet ---------- */
+  var local = location.hostname === "localhost" || location.hostname === "127.0.0.1";
+  if ("serviceWorker" in navigator && (location.protocol === "https:" || local)) {
+    window.addEventListener("load", function () { navigator.serviceWorker.register("sw.js").catch(function () {}); });
+  }
+})();
+</script>
+</body>
+</html>
